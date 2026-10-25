@@ -67,7 +67,7 @@ The analysis scripts write `results/p0/*_results.json` and `*_summary.json`; `ma
 | 4.7 Checkpoint re-scan | `python analysis/p0/p0_3_rescan.py --include_instruct` |
 | 4.7 Head tracking | `python posttraining/assays/track_shared_heads.py` |
 
-GPU experiments were run on a single 32-GB GPU. Arbitration and post-training experiments use bfloat16; the verification interventions in Section 4.6 use float32.
+Arbitration and post-training experiments use bfloat16; the verification interventions in Section 4.6 use float32.
 
 ## Notes
 
