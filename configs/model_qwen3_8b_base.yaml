@@ -1,0 +1,7 @@
+model_id: Qwen/Qwen3-8B-Base
+revision: null
+dtype: bfloat16
+device_map: auto
+chat: false
+enable_thinking: null
+trust_remote_code: false

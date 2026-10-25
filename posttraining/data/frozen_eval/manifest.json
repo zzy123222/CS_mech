@@ -1,0 +1,7 @@
+{
+  "p1_graph": "data/generated/p1_graph_4b_seed1.parquet",
+  "p2_errors": "data/generated/p2_errors.parquet",
+  "p3_battery": "data/generated/p3_task_battery.parquet",
+  "generic_battery": "src/metrics/generic_health.py GENERIC_PAIRS + EXTENDED_PAIRS",
+  "note": "These files are FROZEN for evaluation. NEVER include in SFT training data."
+}

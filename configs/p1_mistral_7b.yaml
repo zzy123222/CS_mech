@@ -1,0 +1,18 @@
+model_config: configs/model_mistral_7b.yaml
+dataset: data/generated/p1_graph_4b_seed1.parquet
+output_dir: results/p1_mistral_7b
+batch_size: 4
+seed: 1
+score_all_choices: true
+activation_layers: all
+activation_conditions:
+- R-only
+- S-only
+- R+S-consistent
+- R+S-conflict
+- S-matched
+patching:
+  clean_condition: R-only
+  corrupt_condition: R+S-conflict
+  max_pairs: 128
+  position: -1

@@ -1,0 +1,42 @@
+[
+  {
+    "step": 0,
+    "progress": 0.0
+  },
+  {
+    "step": 10,
+    "progress": 0.01
+  },
+  {
+    "step": 20,
+    "progress": 0.02
+  },
+  {
+    "step": 50,
+    "progress": 0.05
+  },
+  {
+    "step": 100,
+    "progress": 0.1
+  },
+  {
+    "step": 200,
+    "progress": 0.2
+  },
+  {
+    "step": 400,
+    "progress": 0.4
+  },
+  {
+    "step": 600,
+    "progress": 0.6
+  },
+  {
+    "step": 800,
+    "progress": 0.8
+  },
+  {
+    "step": 1000,
+    "progress": 1.0
+  }
+]

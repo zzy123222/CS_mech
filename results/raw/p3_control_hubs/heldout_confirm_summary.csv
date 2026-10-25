@@ -1,0 +1,19 @@
+seed,task,head,damage
+Seed 1,Graph,H29,4.77
+Seed 1,Graph,H31,3.95
+Seed 1,Graph,H28,1.76
+Seed 1,Retrieval,H29,2.01
+Seed 1,Retrieval,H31,1.69
+Seed 1,Retrieval,H28,0.34
+Seed 2,Graph,H29,4.3
+Seed 2,Graph,H31,3.74
+Seed 2,Graph,H28,1.65
+Seed 2,Retrieval,H29,1.87
+Seed 2,Retrieval,H31,1.47
+Seed 2,Retrieval,H28,0.22
+Seed 3,Graph,H29,4.37
+Seed 3,Graph,H31,3.58
+Seed 3,Graph,H28,1.77
+Seed 3,Retrieval,H29,1.65
+Seed 3,Retrieval,H31,1.24
+Seed 3,Retrieval,H28,0.24

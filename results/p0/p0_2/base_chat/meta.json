@@ -1,0 +1,1 @@
+{"model": "Qwen/Qwen3-4B-Base", "fmt": "chat", "dtype": "bfloat16", "NH": 32, "NKV": 8, "HD": 128, "n_groups": 96}

@@ -1,0 +1,14 @@
+{
+  "arm_a": {
+    "name": "general_sft",
+    "n": 4000,
+    "composition": "100% general instruction"
+  },
+  "arm_b": {
+    "name": "correction_sft",
+    "n": 2000,
+    "composition": "50% general + 50% correction (token-matched)"
+  },
+  "contamination_audit": "No P1/P2/P3 templates used. CHECK/CONTINUE, graph reasoning, retrieval formats all excluded.",
+  "created": "2026-10-03"
+}

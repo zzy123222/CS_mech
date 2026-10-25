@@ -1,0 +1,104 @@
+{
+  "experiment": "paper4_formal_v1",
+  "frozen_on": "2026-10-03",
+  "purpose": "Three-arm 1000-step longitudinal developmental run (seed1 discovery)",
+  "base_model": "Qwen/Qwen3-4B-Base",
+  "instruct_reference": "Qwen/Qwen3-4B",
+  "checkpoint_grid": [
+    0,
+    10,
+    20,
+    50,
+    100,
+    200,
+    300,
+    400,
+    500,
+    650,
+    800,
+    1000
+  ],
+  "arms": {
+    "arm_a_general": {
+      "data": "posttraining/data/sft/general_sft_seed1.jsonl",
+      "n": 4000,
+      "composition": "100% general instruction",
+      "output": "posttraining/results/formal/general_sft_seed1"
+    },
+    "arm_b_correction": {
+      "data": "posttraining/data/sft/correction_sft_seed1.jsonl",
+      "n": 4000,
+      "composition": "2000 general + 2000 true error->fix",
+      "output": "posttraining/results/formal/correction_sft_seed1"
+    },
+    "arm_c_sham": {
+      "data": "posttraining/data/sft/sham_correction_seed1.jsonl",
+      "n": 4000,
+      "composition": "2000 general (identical to arm B) + 2000 sham (same user prompts as B, pairing broken)",
+      "output": "posttraining/results/formal/sham_correction_seed1"
+    }
+  },
+  "training": {
+    "max_steps": 1000,
+    "batch_size": 4,
+    "grad_accum": 8,
+    "effective_batch": 32,
+    "lr": 0.0001,
+    "scheduler": "CosineAnnealingLR",
+    "lora_r": 32,
+    "lora_alpha": 64,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "dtype": "bfloat16",
+    "seed": 1,
+    "epochs_at_1000steps": 8.0,
+    "save_opt_state": "all (optimizer+scheduler+RNG at every checkpoint)"
+  },
+  "panel": {
+    "script": "posttraining/assays/scan_checkpoints.py",
+    "n_per_index": 64,
+    "bootstrap": "paired, B=10000, 95% CI",
+    "indices": [
+      "monitor_d_L20",
+      "controller_d_L22mlp",
+      "integrator_d_L24attn (graph+retrieval mean)",
+      "opponent_d_L25attn"
+    ],
+    "behavior_gates": {
+      "graph_ronly_acc": 0.65,
+      "retrieval_ronly_acc": 0.65,
+      "p2_error_acc": 0.65
+    },
+    "note": "damage indices flagged not-interpretable when the corresponding gate fails"
+  },
+  "frozen_eval": {
+    "p2_errors": "data/generated/p2_errors.parquet",
+    "p3_task_battery": "data/generated/p3_task_battery.parquet",
+    "generic_battery": "src/metrics/generic_health.py",
+    "policy": "NEVER included in SFT training data",
+    "p2_errors_sha": "7ffb2658d7fa8110",
+    "p3_task_battery_sha": "69353e82d75205c9"
+  },
+  "data_shas": {
+    "arm_a_general": "c8fda56212168887",
+    "arm_b_correction": "34069bd4f52d189b",
+    "arm_c_sham": "a6a144cdcf924401"
+  },
+  "code_shas": {
+    "train_lora": "79c0076244ec446c",
+    "scan_checkpoints": "ce4c7e055a090b90",
+    "make_sft_arms": "2352077607227d08",
+    "analyze_development": "34bb23cb5b33ce0c",
+    "scan_generic_nll": "336744747bea37d1",
+    "track_shared_heads": "a1bffb8c946282c9"
+  },
+  "protocol_note": "All apply_chat_template calls use enable_thinking=False (Papers 1-3 protocol, configs/model_qwen3_4b.yaml). Pilot panel used the default template (think-block open) and is NOT comparable."
+}

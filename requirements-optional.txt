@@ -1,0 +1,4 @@
+nnsight>=0.5
+transformer-lens>=4.0
+sae-lens>=6.0
+lm-eval>=0.4

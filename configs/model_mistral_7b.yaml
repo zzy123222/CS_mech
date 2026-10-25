@@ -1,0 +1,7 @@
+model_id: mistralai/Mistral-7B-Instruct-v0.3
+revision: null
+dtype: bfloat16
+device_map: auto
+chat: true
+enable_thinking: null
+trust_remote_code: false

@@ -1,0 +1,9 @@
+model_config: configs/model_qwen3_0.6b.yaml
+dataset: data/generated/p2_errors.parquet
+output_dir: results/p2_error_monitor_06b
+batch_size: 4
+seed: 11
+layers: all
+check_answer: CHECK
+continue_answer: CONTINUE
+max_samples: 300

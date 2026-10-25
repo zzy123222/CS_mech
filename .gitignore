@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+figures/
+posttraining/results/
+results/p1_*/
+results/p2_*/
+results/p3_*/
+results/p4_*/
+*.log
+.ipynb_checkpoints/

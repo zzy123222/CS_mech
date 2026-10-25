@@ -1,0 +1,27 @@
+{
+ "n": 64,
+ "row0_heads_last": {
+  "mean_of_ratios": 0.07193032386017267,
+  "ratio_of_means": 0.12830667259684717
+ },
+ "row0_heads_all": {
+  "mean_of_ratios": 0.07867605615229675,
+  "ratio_of_means": 0.139432592474827
+ },
+ "row0_block_all": {
+  "mean_of_ratios": 0.08305308731369487,
+  "ratio_of_means": 0.1461418116750977
+ },
+ "allrows_heads_last": {
+  "mean_of_ratios": 0.03765955587830626,
+  "ratio_of_means": 0.2187401702411667
+ },
+ "allrows_heads_all": {
+  "mean_of_ratios": 0.03734385430514742,
+  "ratio_of_means": 0.24866141679878928
+ },
+ "allrows_block_all": {
+  "mean_of_ratios": 0.13182868251114346,
+  "ratio_of_means": 0.2911811082186226
+ }
+}

@@ -1,0 +1,14 @@
+model_config: configs/model_qwen3_4b.yaml
+dataset: data/generated/p1_graph.parquet
+output_dir: results/p1_reasoning_switch
+batch_size: 8
+seed: 1
+score_all_choices: true
+activation_layers: all
+activation_conditions: [R-only, S-only, R+S-consistent, R+S-conflict]
+patching:
+  clean_condition: R-only
+  corrupt_condition: R+S-conflict
+  max_pairs: 256
+  position: -1
+steering_alphas: [-3, -2, -1, -0.5, 0, 0.5, 1, 2, 3]

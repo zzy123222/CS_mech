@@ -1,0 +1,24 @@
+{
+  "seed": 1,
+  "arms": {
+    "arm_a_general": {
+      "n": 4000,
+      "composition": "100% general instruction"
+    },
+    "arm_b_correction": {
+      "n": 4000,
+      "composition": "2000 general + 2000 true error->fix"
+    },
+    "arm_c_sham": {
+      "n": 4000,
+      "composition": "2000 general (identical to arm B) + 2000 sham (same user prompts as arm B, pairing broken)"
+    }
+  },
+  "design_notes": [
+    "Arm B and arm C share IDENTICAL user prompts on the correction half; only the assistant-side error->fix pairing differs (true vs shuffled).",
+    "All passages drawn from a fixed fact bank (12 domains); corruption replaces a true attribute with a same-domain wrong attribute.",
+    "Token budgets matched by construction (same passage generator, same length ranges)."
+  ],
+  "contamination_audit": "No CHECK/CONTINUE, no graph reasoning, no retrieval formats, no five-condition scaffold. Frozen eval sets untouched.",
+  "created": "2026-10-03"
+}

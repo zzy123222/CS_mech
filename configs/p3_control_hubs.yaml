@@ -1,0 +1,14 @@
+model_config: configs/model_qwen3_4b.yaml
+dataset: data/generated/p3_task_battery.parquet
+output_dir: results/p3_control_hubs
+seed: 31
+max_samples_per_task: 64
+candidate_modules:
+- L20:attn
+- L24:attn
+- L24:mlp
+- L28:attn
+- L28:mlp
+- L32:attn
+control_condition: R-only
+target_condition: R+S-conflict
