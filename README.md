@@ -49,7 +49,7 @@ python analysis/p0/p0_6_7_summary.py
 python analysis/make_figures.py
 ```
 
-The analysis scripts write `results/p0/*_results.json` and `*_summary.json`; `make_figures.py` writes `figures/Fig1–Fig9` and `figures/Graphical_abstract` as PDF, 600-dpi PNG and TIFF.
+The analysis scripts write `results/p0/*_results.json` and `*_summary.json`; `make_figures.py` writes `figures/Fig1–Fig9` and `figures/Graphical_abstract` as PDF, PNG and TIFF.
 
 ## Re-running the experiments
 
