@@ -74,3 +74,7 @@ GPU experiments were run on a single 32-GB GPU. Arbitration and post-training ex
 * Every margin is computed from one batched forward pass with one row per answer option; all interventions modify every row of the batch.
 * In Qwen3-4B, query head *h* reads key/value head ⌊*h*/4⌋; query heads 28–31 form key/value group 7.
 * Model checkpoints produced by the LoRA runs are not included because of their size; they can be regenerated with the commands above.
+
+## License
+
+This project is released under the [MIT License](LICENSE).
