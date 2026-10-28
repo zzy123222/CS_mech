@@ -303,7 +303,10 @@ eb(ax, np.arange(3) + 0.18, [pt[m]['denoising_matched_frac_of_gap'] for m, _ in 
 ax.axhline(0, color='k', lw=0.5); ax.set_xticks(range(3)); ax.set_xticklabels([l for _, l in pm]); ax.set_ylabel('Shift toward other condition\n(fraction of error − clean gap)'); ax.set_ylim(-0.75, 1.0); ax.set_yticks([-0.5, -0.25, 0, 0.25, 0.5, 0.75]); ax.legend(loc='upper center', fontsize=5.0, handlelength=1.0); lab(ax, 'd', -0.4)
 save(fig, 'Fig7')
 
-rs = pd.read_csv(f'{V}/p0_3_rescan.csv')
+RSF = f'{V}/p0_3_rescan_v2.csv'
+if not os.path.exists(RSF):
+    print('WARNING: grouped-probe rescan table not available yet; Fig. 8e uses the original probes (draft only)'); RSF = f'{V}/p0_3_rescan.csv'
+rs = pd.read_csv(RSF)
 ref = rs[rs.model == 'instruct_ref'].iloc[0]; base0 = rs[rs.model.str.endswith('@0')].iloc[0]
 d = rs[rs.model.str.contains('@') & ~rs.model.str.endswith('@0')].copy()
 d['arm'] = d.model.str.extract(r'^(general_sft|correction_sft|sham_correction)')[0]; d['seed'] = d.model.str.extract(r'seed(\d)')[0].astype(int); d['step'] = d.model.str.extract(r'@(\d+)')[0].astype(int)
@@ -340,7 +343,7 @@ hr['arm'] = hr.model.str.extract(r'^(general_sft|correction_sft|sham_correction)
 for arm, (c, l) in ARM.items():
     g = hr[(hr.arm == arm) & (hr.task == 'retrieval')].groupby('step').rho.agg(['mean', 'min', 'max'])
     ax.plot(g.index, g['mean'], '-o', color=c, ms=2.2, label=l); ax.fill_between(g.index, g['min'], g['max'], color=c, alpha=0.13, lw=0)
-ax.axhline(0, color='#999999', lw=0.5, ls=':'); ax.set_xlabel('Fine-tuning step'); ax.set_ylabel('Head-profile correlation\nwith reference (retrieval)'); lab(ax, 'f', -0.36)
+ax.axhline(0, color='#999999', lw=0.5, ls=':'); ax.set_xlabel('Fine-tuning step'); ax.set_ylabel('Six-head damage profile,\nρ with reference (retrieval)'); lab(ax, 'f', -0.36)
 h_, l_ = axs[0, 2].get_legend_handles_labels(); fig.legend(h_, l_, loc='upper center', ncol=4, fontsize=6, bbox_to_anchor=(0.5, 0.0))
 save(fig, 'Fig8')
 
@@ -348,11 +351,11 @@ LEV = {'S': ('#2B8C5A', 'Supported'), 'P': ('#A8D5B5', 'Partial'), 'N': ('#E9B3A
 rows = ['L24 attn., key/value\ngroup 7 (heads 28–31)', 'L24 attn.,\nother 28 heads', 'L22 MLP', 'L25 attention', 'L20 residual']
 cols = ['Decodable', 'Sufficient', 'Necessary', 'Condition-\nspecific', 'Reused across\ntasks', 'Changed by\npost-training']
 cells9 = [
-    [('P', 'layer-level probe\nAUC ≈ 1.0'), ('S', '99% of block\npatch; keys 87%'), ('S', '68% of\nrule margin'), ('P', 'format-gated;\ndonor-specific'), ('S', 'retrieval: 96%\nof head damage'), ('S', 'necessity ×3;\nheads re-weighted')],
+    [('P', 'layer-level probe\nAUC ≈ 1.0'), ('S', '99% of block\npatch; keys 87%'), ('S', '68% of\nrule margin'), ('P', 'format-dependent;\ndonor-specific'), ('S', 'retrieval: 96%\nof head damage'), ('S', 'necessity ×3;\nheads re-weighted')],
     [('U', '–'), ('N', '2% of whole-\nblock patch'), ('N', '−1% of\nrule margin'), ('U', '–'), ('N', 'no retrieval\ndamage'), ('N', 'no change')],
-    [('P', 'probe AUC 0.67\n(already in base)'), ('P', 'moves 28–49%\nof error gap'), ('P', 'error − clean\n−0.44 nats'), ('S', 'clean effect\n≈ 0'), ('U', '–'), ('S', 'recruited; fastest\nwith true repairs')],
-    [('P', 'probe AUC ≈ 0.7'), ('P', 'moves 38–50% of\ngap (opposite sign)'), ('P', 'error − clean\n+0.60 nats'), ('X', 'ablation: specific\nsteering: criterion'), ('U', '–'), ('N', 'steering effect\nunchanged')],
-    [('P', 'probe AUC ≈ 0.7'), ('N', '≤ 14% of gap'), ('N', 'no effect on C;\nshifts readout E'), ('S', 'acts on E only'), ('U', '–'), ('P', 'E effect recruited\nin arms B and C')]]
+    [('P', f'probe AUC {base0["probe_lr_auc_L22mlp"]:.2f}\n(' + ('already in base' if base0["probe_lr_auc_L22mlp"] >= 0.6 else 'weak in base') + ')'), ('P', 'moves 28–49%\nof error gap'), ('P', 'error − clean\n−0.44 nats'), ('S', 'clean effect\n≈ 0'), ('U', '–'), ('S', 'recruited; fastest\nwith true repairs')],
+    [('P', f'probe AUC {ref["probe_lr_auc_L25attn"]:.2f}'), ('P', 'moves 38–50% of\ngap (opposite sign)'), ('P', 'error − clean\n+0.60 nats'), ('X', 'ablation: specific\nsteering: criterion'), ('U', '–'), ('N', 'steering effect\nunchanged')],
+    [('P', f'probe AUC {ref["probe_lr_auc_L20"]:.2f}'), ('N', '≤ 14% of gap'), ('N', 'no effect on C;\nshifts readout E'), ('S', 'acts on E only'), ('U', '–'), ('P', 'E effect recruited\nin arms B and C')]]
 fig, ax = plt.subplots(figsize=(W, 2.9))
 for i, row in enumerate(cells9):
     for j, (lv, txt) in enumerate(row):
@@ -369,7 +372,7 @@ fig = plt.figure(figsize=(6.64, 2.66))
 ax = fig.add_axes([0.0, 0.0, 1, 1]); ax.axis('off'); ax.set_xlim(0, 1); ax.set_ylim(0, 1)
 ax.text(0.5, 0.93, 'Causal profiling of a large language model (Qwen3-4B, its base model and 63 fine-tuning checkpoints)', ha='center', fontsize=8, fontweight='bold')
 for x0, title, lines, col in [(0.015, 'One key/value group arbitrates evidence', ['layer-24 attention, heads 28–31', 'necessary: 68% of the rule margin', 'sufficient: 99% of the block patch', 'keys carry the evidence (87%)', 'reused by retrieval (96%)'], VERM),
-                              (0.345, 'Post-training re-weights and gates it', ['present and sufficient in base model', 'necessity about 3× higher', 'heads re-weighted within the group', 'engaged only in native prompt format'], BLUE),
+                              (0.345, 'Post-training re-weights it', ['present and sufficient in base model', 'necessity about 3× higher', 'heads re-weighted within the group', 'engaged only in native prompt format'], BLUE),
                               (0.675, 'Verification is mostly a criterion', ['P(CHECK) = 1 on error and clean', 'small error component (AUC 0.72)', 'L22 MLP and L25 attention oppose', 'tuning keeps policy, not detection'], GREEN)]:
     ax.add_patch(FancyBboxPatch((x0, 0.06), 0.31, 0.78, boxstyle='round,pad=0.005,rounding_size=0.02', fc='white', ec=col, lw=1.2))
     ax.text(x0 + 0.155, 0.76, title, ha='center', fontsize=7.4, fontweight='bold', color=col)

@@ -44,6 +44,7 @@ No GPU is needed for this step.
 ```bash
 python analysis/p0/p0_1_analyze.py
 python analysis/p0/p0_2_analyze.py
+python analysis/p0/p0_3_merge_probes.py
 python analysis/p0/p0_3_summary.py
 python analysis/p0/p0_6_7_summary.py
 python analysis/make_figures.py
@@ -65,6 +66,7 @@ The analysis scripts write `results/p0/*_results.json` and `*_summary.json`; `ma
 | 4.7 Post-training data | `python posttraining/data/make_sft_arms.py --seed 1` (seeds 1–3) |
 | 4.7 LoRA training | `python posttraining/train/train_lora.py --arm correction_sft --data posttraining/data/sft/correction_sft_seed1.jsonl --output_dir posttraining/results/formal/correction_sft_seed1 --seed 1` |
 | 4.7 Checkpoint re-scan | `python analysis/p0/p0_3_rescan.py --include_instruct` |
+| 4.7 Linear probes (pair-grouped cross-validation) | `python analysis/p0/p0_3_probe_grouped.py` |
 | 4.7 Head tracking | `python posttraining/assays/track_shared_heads.py` |
 
 Arbitration and post-training experiments use bfloat16; the verification interventions in Section 4.6 use float32.
@@ -73,6 +75,7 @@ Arbitration and post-training experiments use bfloat16; the verification interve
 
 * Every margin is computed from one batched forward pass with one row per answer option; all interventions modify every row of the batch.
 * In Qwen3-4B, query head *h* reads key/value head ⌊*h*/4⌋; query heads 28–31 form key/value group 7.
+* The probe AUCs reported in the paper come from `p0_3_probe_grouped.py`, which keeps the error and clean version of each trajectory in the same cross-validation fold and fits the scaler on training folds only. `p0_3_merge_probes.py` substitutes these values for the probe columns of `results/p0/p0_3_rescan.csv` and writes `results/p0/p0_3_rescan_v2.csv`, which is used by `p0_3_summary.py` and `make_figures.py`; `results/p0/p0_3_probe_comparison.csv` lists both cross-validation schemes.
 * Model checkpoints produced by the LoRA runs are not included because of their size; they can be regenerated with the commands above.
 
 ## License

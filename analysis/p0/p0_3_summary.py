@@ -1,7 +1,7 @@
 import json
 import numpy as np, pandas as pd
 R = 'results/p0'
-d = pd.read_csv(f'{R}/p0_3_rescan.csv')
+d = pd.read_csv(f'{R}/p0_3_rescan_v2.csv')
 ref = d[d.model == 'instruct_ref'].iloc[0].to_dict() if (d.model == 'instruct_ref').any() else None
 base = d[d.model.str.endswith('@0')].iloc[0].to_dict()
 d = d[d.model.str.contains('@')].copy()
