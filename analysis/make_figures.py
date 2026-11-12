@@ -153,7 +153,7 @@ ax.set_ylim(-0.025, 0.285); ax.text(29.5, 0.262, 'group 7', fontsize=5.5, ha='ce
 lab(ax, 'd', -0.2)
 save(fig, 'Fig2')
 
-fig, axs = plt.subplots(1, 4, figsize=(W, 1.95), gridspec_kw={'width_ratios': [1.15, 1.35, 1.2, 0.9], 'wspace': 0.5})
+fig, axs = plt.subplots(1, 3, figsize=(W, 1.95), gridspec_kw={'width_ratios': [1.15, 1.35, 1.2], 'wspace': 0.5})
 ax = axs[0]
 names = [('block', 'Whole block'), ('qgroup7', 'Group 7'), ('H28_29_31', 'H28+H29+H31'), ('H29_31', 'H29+H31'), ('H30', 'H30'), ('all_but_grp7', 'Other 28')]
 est = [IC['block_ko_norm'] if k == 'block' else IC['set_ko_norm'][k] for k, _ in names]
@@ -172,12 +172,7 @@ ax = axs[2]
 kk = np.arange(8)
 for j, (k, l, c) in enumerate([('k_patch', 'Keys', VERM), ('v_patch', 'Values', BLUE), ('kv_patch', 'Keys + values', BLACK)]):
     eb(ax, kk + (j - 1) * 0.27, [IC[k][str(i)] for i in kk], c, 0.26, label=l)
-ax.axhline(1, color='k', ls='--', lw=0.5); ax.set_xticks(kk); ax.set_xlabel('Key/value head'); ax.set_ylabel('Patch gain / whole-block gain'); ax.legend(loc='upper left', fontsize=5.6); ax.set_ylim(-0.2, 1.15); lab(ax, 'c', -0.3)
-ax = axs[3]
-xs = np.arange(2)
-ax.bar(xs - 0.18, [BR['row0_heads_last']['ratio_of_means'], BR['row0_block_all']['ratio_of_means']], 0.34, color='#BBBBBB', label='First batch row only')
-ax.bar(xs + 0.18, [BR['allrows_heads_last']['ratio_of_means'], BR['allrows_block_all']['ratio_of_means']], 0.34, color=BLUE, label='All batch rows')
-ax.set_xticks(xs); ax.set_xticklabels(['H28+H29+H31', 'Whole block'], rotation=45, ha='right'); ax.set_ylabel('Recovery (ratio of means)'); ax.legend(loc='upper left', fontsize=5.6); ax.set_ylim(0, 0.42); lab(ax, 'd', -0.42)
+ax.axhline(1, color='k', ls='--', lw=0.5); ax.set_xticks(kk); ax.set_xlabel('Key-value head'); ax.set_ylabel('Patch gain / whole-block gain'); ax.legend(loc='upper left', fontsize=5.6); ax.set_ylim(-0.2, 1.15); lab(ax, 'c', -0.3)
 save(fig, 'Fig3')
 
 fig, axs = plt.subplots(1, 4, figsize=(W, 1.95), gridspec_kw={'width_ratios': [1.45, 0.95, 1.2, 1.1], 'wspace': 0.48})
@@ -348,14 +343,14 @@ h_, l_ = axs[0, 2].get_legend_handles_labels(); fig.legend(h_, l_, loc='upper ce
 save(fig, 'Fig8')
 
 LEV = {'S': ('#2B8C5A', 'Supported'), 'P': ('#A8D5B5', 'Partial'), 'N': ('#E9B3A8', 'Tested, not supported'), 'U': ('#E8E8E8', 'Not tested'), 'X': ('#F3D48A', 'Depends on intervention')}
-rows = ['L24 attn., key/value\ngroup 7 (heads 28–31)', 'L24 attn.,\nother 28 heads', 'L22 MLP', 'L25 attention', 'L20 residual']
+rows = ['L24 attn., key-value\ngroup 7 (heads 28–31)', 'L24 attn.,\nother 28 heads', 'L22 MLP', 'L25 attention', 'L20 residual']
 cols = ['Decodable', 'Sufficient', 'Necessary', 'Condition-\nspecific', 'Reused across\ntasks', 'Changed by\npost-training']
 cells9 = [
-    [('P', 'layer-level probe\nAUC ≈ 1.0'), ('S', '99% of block\npatch; keys 87%'), ('S', '68% of\nrule margin'), ('P', 'format-dependent;\ndonor-specific'), ('S', 'retrieval: 96%\nof head damage'), ('S', 'necessity ×3;\nheads re-weighted')],
-    [('U', '–'), ('N', '2% of whole-\nblock patch'), ('N', '−1% of\nrule margin'), ('U', '–'), ('N', 'no retrieval\ndamage'), ('N', 'no change')],
-    [('P', f'probe AUC {base0["probe_lr_auc_L22mlp"]:.2f}\n(' + ('already in base' if base0["probe_lr_auc_L22mlp"] >= 0.6 else 'weak in base') + ')'), ('P', 'moves 28–49%\nof error gap'), ('P', 'error − clean\n−0.44 nats'), ('S', 'clean effect\n≈ 0'), ('U', '–'), ('S', 'recruited; fastest\nwith true repairs')],
+    [('U', 'not tested at\nthe group level'), ('S', '99% of block\npatch; keys 87%'), ('S', '68% of\nrule margin'), ('P', 'format-dependent\nengagement;\nrobust across\ndonor protocols'), ('S', 'retrieval: 96%\nof head damage'), ('P', '≈3× necessity,\naltered weighting\nvs. base model\n(descriptive)')],
+    [('U', '–'), ('N', '2% of whole-\nblock patch'), ('N', '−1% of\nrule margin'), ('U', '–'), ('N', 'no retrieval\ndamage'), ('U', '3 control heads:\nno change;\n25 not tracked')],
+    [('P', f'probe AUC {ref["probe_lr_auc_L22mlp"]:.2f}\n(base model {base0["probe_lr_auc_L22mlp"]:.2f})'), ('P', 'moves 28–49%\nof error gap'), ('P', 'error − clean\n−0.44 nats'), ('S', 'clean effect\n≈ 0'), ('U', '–'), ('S', 'recruited; fastest\nwith true repairs')],
     [('P', f'probe AUC {ref["probe_lr_auc_L25attn"]:.2f}'), ('P', 'moves 38–50% of\ngap (opposite sign)'), ('P', 'error − clean\n+0.60 nats'), ('X', 'ablation: specific\nsteering: criterion'), ('U', '–'), ('N', 'steering effect\nunchanged')],
-    [('P', f'probe AUC {ref["probe_lr_auc_L20"]:.2f}'), ('N', '≤ 14% of gap'), ('N', 'no effect on C;\nshifts readout E'), ('S', 'acts on E only'), ('U', '–'), ('P', 'E effect recruited\nin arms B and C')]]
+    [('P', f'probe AUC {ref["probe_lr_auc_L20"]:.2f}'), ('N', '≤ 14% of gap'), ('X', 'ablation: no effect\non C; projection\nremoval: small'), ('S', 'specific on E;\nsmall specific\neffect on C'), ('U', '–'), ('P', 'E effect recruited\nin arms B and C')]]
 fig, ax = plt.subplots(figsize=(W, 2.9))
 for i, row in enumerate(cells9):
     for j, (lv, txt) in enumerate(row):
