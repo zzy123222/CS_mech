@@ -2,7 +2,7 @@
 
 Code, data and result tables for the paper
 
-**Causal profiling of a large language model: a format-gated grouped-query attention circuit for evidence arbitration and its reorganization by post-training**
+**A grouped-query attention circuit for evidence arbitration in a language model**
 
 The repository contains the task generators, causal-intervention library, experiment runners, controlled post-training pipeline, the analysis scripts that produce every number in the manuscript, and the script that draws all figures from the stored results.
 
